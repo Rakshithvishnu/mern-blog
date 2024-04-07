@@ -7,11 +7,14 @@ import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
 import Projects from './pages/Projects'
 import ErrorPage from './pages/ErrorPage'
+import Header from './components/Header'
+ 
 
 const App = () => {
   return (
     <React.Fragment>
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/about" element={<About />} />
