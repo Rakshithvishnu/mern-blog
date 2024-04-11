@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard'
 import Projects from './pages/Projects'
 import ErrorPage from './pages/ErrorPage'
 import Header from './components/Header'
+import Footer from './components/Footer'
  
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/projects" element={<Projects />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </React.Fragment>
     
