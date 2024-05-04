@@ -68,3 +68,53 @@ export const signin = async (req, res, next) => {
         next(error)
     }
 }
+
+//creating a google signin component
+export const google = async (req, res, next) => {
+    //checking if user exists or not
+    const { email, name, googlePhotoUrl } = req.body
+    try {
+        //searching for email
+        const user = await User.findOne({email})
+        if(user){
+            //creating a token
+            const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY)
+            const {password, ...rest} = user._doc
+            res.status(200).cookie('access_token', token, {
+                httpOnly: true
+            }).json(rest)
+        }
+        else {
+            //creating a random password
+            const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
+            
+            //hashing a generated random password with 10 round of salt
+            const hashedPassword = bcryptjs.hashSync(generatedPassword, 10)
+
+            //creating new user
+            const newUser = new User({
+                username: name.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
+                email,
+                password: hashedPassword,
+                profilePicture: googlePhotoUrl,
+            })
+
+            //saving new user
+            await newUser.save()
+
+            //creating a token
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET_KEY)
+
+            //separate a password from this new user
+            const { password, ...rest } = newUser._doc
+
+            //creating a response
+            res.status(200).cookie('access_token', token, {
+                httpOnly: true
+            }).json(rest)
+            
+        }
+    } catch (error) {
+        next(error)
+    }
+}

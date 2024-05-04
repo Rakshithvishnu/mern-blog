@@ -10,14 +10,18 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
 
     password: {
         type: String,
-        required: true,
-        
-    } 
+        required: true,    
+    },
+
+    profilePicture: {
+        type: String,
+        default: "https://images.app.goo.gl/EhdcCH2oS4Mw9Khw5",
+    }
 }, {timestamps: true},)
 
 //creating a model
