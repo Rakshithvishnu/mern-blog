@@ -8,9 +8,9 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
-  const { theme } = useSelector((state) => state.theme)
+  const { theme } = useSelector((state) => state.theme);
   return (
     <React.Fragment>
       <Navbar className="border-b-2">
@@ -41,7 +41,7 @@ const Header = () => {
             pill
             onClick={() => dispatch(toggleTheme())}
           >
-            {theme === 'light' ? <FaSun /> : <FaMoon />}    
+            {theme === "light" ? <FaSun /> : <FaMoon />}
           </Button>
           {currentUser ? (
             <Dropdown
@@ -52,9 +52,7 @@ const Header = () => {
               }
             >
               <Dropdown.Header>
-                <span className="block text-sm">
-                  @{currentUser.username}
-                </span>
+                <span className="block text-sm">@{currentUser.username}</span>
 
                 <span className="block text-sm font-medium truncate">
                   {currentUser.email}
