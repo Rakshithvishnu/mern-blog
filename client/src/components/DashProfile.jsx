@@ -5,7 +5,7 @@ import { getDownloadURL, getStorage, uploadBytesResumable, ref } from 'firebase/
 import { app } from "../firebase";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure } from "../redux/user/userSlice";
+import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 
@@ -134,6 +134,23 @@ const DashProfile = () => {
       dispatch(deleteUserFailure(error.message))
     }
   }
+
+  const handleSignout = async () => {
+    try {
+      const res = await fetch('/api/user/signout', {
+        method: 'POST'
+      })
+      const data = await res.json()
+      if(!res.ok){
+        console.log(data.message)
+      }
+      else{
+        dispatch(signoutSuccess())
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -210,8 +227,13 @@ const DashProfile = () => {
       </form>
 
       <div className="text-red-500 flex justify-between">
-        <span onClick={()=>setShowModal(true)} className="cursor-pointer">Delete Account</span>
-        <span className="cursor-pointer">Sign Out</span>
+        <span onClick={()=>setShowModal(true)} className="cursor-pointer">
+          Delete Account
+        </span>
+
+        <span onClick={handleSignout} className="cursor-pointer">
+          Sign Out
+        </span>
       </div>
       {updateUserSuccess && (
         <Alert color='success' className="mt-5">
@@ -234,6 +256,7 @@ const DashProfile = () => {
         popup size='md'
       >
         <Modal.Header />
+
         <Modal.Body>
           <div className="text-center">
             <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
