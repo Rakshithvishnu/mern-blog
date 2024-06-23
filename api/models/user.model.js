@@ -21,7 +21,11 @@ const userSchema = new mongoose.Schema({
     profilePicture: {
         type: String,
         default: "https://images.app.goo.gl/EhdcCH2oS4Mw9Khw5",
-    }
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+    },
 }, {timestamps: true},)
 
 //creating a model
